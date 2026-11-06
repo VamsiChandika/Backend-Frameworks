@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="{{url_for('static',filename='css/authentication.css')}}">
+    </head> 
+    <body>
+        <center>
+            <nav>
+                <a href="{{url_for('home')}}">Home</a> |
+                <a href="{{url_for('authentication')}}">Authentication</a> |
+                <a href="{{url_for('view')}}">View</a> |
+                {% if session.get('user') %}
+                <a href="{{url_for('logout')}}">Logout</a>
+                {% else %}
+                <a href="{{url_for('registration')}}">Registration</a> |
+                <a href="{{url_for('login')}}">Login</a>
+                {% endif %}
+            </nav>
+            <h1>
+                This Is An Authentication Page
+            </h1>
+        </center>
+    </body>
+</html>

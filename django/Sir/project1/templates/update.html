@@ -1,0 +1,26 @@
+{% load static %}
+<html>
+    <head>
+        <title>
+            Signup
+        </title>
+        <link href="{% static 'css/signup.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <center>
+            <h1>Update The Form</h1>
+            <form method="post" action="{% url 'update' result.id %}" >
+                {% csrf_token %}
+                <input type="text" value="{{result.firstname}}" name="firstname" required><br>
+                <input type="text" value="{{result.lastname}}" name="lastname" required><br>
+                <input type="email" value="{{result.email}}" name="email" required><br>
+                <input type="password" value="{{result.password}}" name="password" required><br>
+                <input type="number" value="{{result.mobileno}}" name="mobileno" required><br>
+                <textarea name="location" value="{{result.location}}" cols="38" rows="5" required></textarea><br>
+                <input type="number" value="{{result.zipcode}}" name="zipcode" required><br>
+                <input type="submit" value="Submit" id="">
+                <input type="reset" value="Clear" id="">
+            </form>
+        </center>
+    </body>
+</html>

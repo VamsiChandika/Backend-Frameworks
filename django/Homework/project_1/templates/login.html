@@ -1,0 +1,52 @@
+{% load static %}
+<html>
+    <head>
+        <title>
+            Login
+        </title>
+        <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    </head>
+    <body>
+        <center>
+            <nav>
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'view' %}">View</a>
+                {% if request.session %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'registration' %}">Registration</a>
+                {% else %}
+                <a href="{% url 'logout' %}">Logout</a>
+                {% endif %}
+            </nav>
+            <h1>
+                This Is A Login Page
+            </h1>
+            {% if messages %}
+              {% for message in messages %}
+               <h1>{{message}}</h1>
+              {% endfor %}
+            {% endif %}
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{request.GET.next}}">
+                <table>
+                    <tr>
+                        <th><label for="">Email</label></th>
+                        <td><input type="email" name="email" required id=""></td>
+                    </tr>
+                    <tr>
+                        <th><label for="">Password</label></th>
+                        <td><input type="password" name="password" required id=""></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center;">
+                            <input type="submit" value="Submit">
+                            <input type="reset" value="Clear">
+                        </td>
+                    </tr>
+                    </table>
+            </form>
+        </center>
+    </body>
+</html>

@@ -1,0 +1,236 @@
+1. Adding Data :-
+-----------------
+
+Routing data from sql database to template:
+-------------------------------------------
+
+@app.route("/data")   
+def data():   
+    cur = con.cursor() 
+    cur.execute("select * from employee")
+    result = cur.fetchall()
+    return render_template('data.html',result=result) 
+
+
+For n no.of rows to insert we use for loop for insertion :
+----------------------------------------------------------
+
+                <table>
+                    <caption>
+                        Employee Data
+                    </caption>
+                    <tr>
+                        <th>Id</th><th>Firstname</th><th>Lastname</th>
+                        <th>Email</th><th>Password</th><th>Location</th>
+                        <th>Zipcode</th><th>Mobileno</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                    {% for row in result %}
+                    <tr>
+                        <td>{{row[0]}}</td><td>{{row[1]}}</td><td>{{row[2]}}</td><td>{{row[3]}}</td>
+                        <td>{{row[4]}}</td><td>{{row[5]}}</td><td>{{row[6]}}<td>{{row[7]}}</td>
+                        <td> <a href="">Click Here</a> </td>
+                        <td> <a href="">Click Here</a> </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+
+
+URL for update & delete :
+--------------------------
+
+@app.route("/update/<int:id>/",methods=["POST","GET"])
+def update(id):
+    cur = con.cursor()
+    cur.execute("select * from employee where id = %s",(id,))
+    result = cur.fetchone()
+    con.commit()
+    return render_template('update.html',result=result)
+
+
+@app.route("/delete/<int:id>/",methods=["POST","GET"])
+def delete(id):
+    cur = con.cursor()
+    cur.execute("delete from employee where id = %s", (id,))
+    con.commit()
+    
+    return redirect(url_for('data')) 
+
+In data.html : 
+
+<td> <a href="{{(url_for('update',id=row[0]))}}">Click Here</a> </td>
+<td> <a href="{{(url_for('delete',id=row[0]))}}">Click Here</a> </td>
+
+
+Creating update.html based on signup.html without nav tags :
+-----------------------------------------
+
+                <h1>This Is Update Page</h1>
+                <form method="post" action="{{url_for('update',id = result[0])}}">
+                    <input type="text" value="{{result[1]}}" name="firstname" required/><br>
+                    <input type="text" value="{{result[2]}}" name="lastname" required/><br>
+                    <input type="email" value="{{result[3]}}" name="email" required/><br>
+                    <input type="password" value="{{result[4]}}" name="password" required/><br>
+                    <input type="text" value="{{result[5]}}" name="location" required/><br>
+                    <input type="number" value="{{result[6]}}" name="zipcode" required/><br>
+                    <input type="number" value="{{result[7]}}" name="mobileno" required/><br>
+                    <input type="submit" value="Submit">
+                    <input type="reset" value="Clear">
+                </form>
+
+
+Adjusting the updated rows data route into database as user input :
+-------------------------------------------------------------------
+
+@app.route("/update/<int:id>/",methods=["POST","GET"])
+def update(id):
+    cur = con.cursor()
+    cur.execute("select * from employee where id = %s",(id,))
+    result = cur.fetchone()
+    if request.method == "POST":
+            firstname = request.form.get("firstname")
+            lastname = request.form.get("lastname")
+            email = request.form.get("email")
+            password = request.form.get("password")
+            location = request.form.get("location")
+            zipcode = request.form.get("zipcode")
+            mobileno = request.form.get("mobileno")
+            cur = con.cursor()
+            query = """update employee set firstname = %s, lastname = %s, email = %s, password = %s,
+                    location = %s, zipcode = %s, mobileno = %s where id = %s"""
+            values = (firstname,lastname,email,password,location,zipcode,mobileno,id)
+            cur.execute(query,values)
+            con.commit()
+            return redirect(url_for('data'))
+    con.commit()
+    return render_template('update.html',result=result)
+
+
+
+
+2. For Security :
+-----------------
+
+Hashing data cannot be retrieve back but it can validate. It should be always string but not integers.
+ It is used :
+           1. Werkzeug  --- from werkzug.security import generate_password_hash, check_password_hash
+           2. bcrypt   --- import bcrypt
+
+1.Werkzeug  :
+       Uses the function called generate_password_hash - Encrypting & check_password_hash - Validating -  syn : check_password_hash(hashed_data,data) .
+
+These are imported from werkzug.secuirty package.
+
+@app.route("/hashing")
+def hashing():
+    data = "hello1234"
+    result = generate_password_hash(data)
+    if check_password_hash(result,"hello1234"):
+        return "Both Are Same"
+    else:
+        return "Both Are Not Same"
+
+
+2. Bcrypt :
+           import 
+           Uses the functions called : 1. hashpw()
+                                       2. checkpw()
+                                       3. gensalt() To make hashing, we are creating salt for hashpw and checkpw.
+
+data --> Encode --> bytes --> hashing
+
+--> Data is intially encoded
+--> Then salt is generated
+--> hashpw() is also generated with data & salt
+--> result is validated using checkpw().
+
+@app.route("/hashing2")
+def hashing2():
+    data = "hello1234"
+    data = data.encode()
+    salt = bcrypt.gensalt()  # Generating the salt
+    result = bcrypt.hashpw(data,salt)
+    if bcrypt.checkpw("hello1234".encode(),result):
+        return "Both are same"
+    else:
+        return "Both are not same"
+
+***
+ Cryptography -- Encyption & Decryption : 
+ ----------------------------------------
+  
+Encryption - Plain text to Cypher text
+Decryption - Cypher text to Plain text
+
+1. Symmetric : Same keys used for encryp & decryp
+2. Asymmetirc : Uses different keys.
+
+### The main difference between hashing and cryptography is 
+==> Hashing is onesided -- once created cant retrieve back but can be validated.*** Used for passwords
+==> Cryptography is twosided -- It can be encrypted and also decrypted.*** Used for WhatsApp msgs                                                      
+
+Steps :
+-------
+# step 1: Generating key
+# step 2: Convert Data into Bytes
+# step 3: Creating object for fernet class using key
+# step 4: Encryption from fernet class
+# step 5: Decryption from fernet class
+
+@app.route("/encrypt")
+def encryption():
+    data = "hello1234"
+    key = Fernet.generate_key() # step 1: Generating key
+    data = data.encode() # step 2: Convert Data into Bytes
+    f1 = Fernet(key) # step 3: Creating object for fernet class using key
+    encrypted_data = f1.encrypt(data) # step 4: Encryption
+    decrypted_data = f1.decrypt(encrypted_data) # step 5: Decryption
+    return decrypted_data
+    
+          
+3. Session :
+------------
+
+---> The time interval in between the user login to logout.
+---> Session stores all the information about user while login, using a file called "Cookie",
+---> "Cookie" -- Temporary file and uses data structure called "dictionary".
+---> We need to create a secret key for sessions.
+
+
+By using this we can able to manage :
+  1. We can able to make users with respect to acess the application features --> Pins,Passwords
+  2. We can define the amount of time user can login with system
+  3. We can restirct every time login at any point.
+
+
+import session
+create a secret_key
+Changes in data
+create a logout url in dashboard --- Acessibility
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect('login')
+
+Then as per login and logouts --- Visibility
+
+ {% if session.get('user') %} 
+<a href="{{url_for('logout')}}">Logout</a> 
+{% else %}              
+<a href="{{url_for('login')}}">Login</a>
+<a href="{{url_for('signup')}}">Signup</a>
+{% endif %}
+
+Images and Button :
+
+<img src="{{ url_for('static',filename='images/Image-1.jpg') }}" alt="No Image Found" width="700" height="400">
+<br><br>
+<button onclick="display()">Click Me!</button>  ---- JAVASCRIPT CODE
+
+
+Then create the home.js and add the javascript code.
+
+
+
+

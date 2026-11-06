@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <link rel="stylesheet" 
+        href="{{ url_for('static',filename='css/login.css') }}">
+    </head>
+        <body>
+            <center>
+                <nav>
+                    <a href="{{url_for('home')}}">Home</a>
+                    <a href="{{url_for('contact')}}">Contact</a>
+                    <a href="{{url_for('data')}}">Data</a>
+                    <a href="{{url_for('services')}}">Services</a> 
+                    <a href="{{url_for('signup')}}">Signup</a>
+                </nav>
+                <h1>This Is Login Page</h1>
+                <form method="post" action="{{url_for('login')}}">
+                    <input type="email" placeholder="Email" name="email" required/><br>
+                    <input type="password" placeholder="Password" name="password" required/><br>
+
+                    <input type="submit" value="Submit">
+                    <input type="reset" value="Clear">
+                </form>
+            </center>
+        </body>  
+</html>

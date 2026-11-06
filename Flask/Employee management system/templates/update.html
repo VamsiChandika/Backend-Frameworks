@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <link rel="stylesheet" 
+        href="{{ url_for('static',filename='css/signup.css') }}">
+    </head>
+        <body>
+            <center>                 
+                <h1>This Is Update Page</h1>
+                <form method="post" action="{{url_for('update',id = result[0])}}">
+                    <input type="text" value="{{result[1]}}" name="firstname" required/><br>
+                    <input type="text" value="{{result[2]}}" name="lastname" required/><br>
+                    <input type="email" value="{{result[3]}}" name="email" required/><br>
+                    <input type="password" value="{{result[4]}}" name="password" required/><br>
+                    <input type="text" value="{{result[5]}}" name="location" required/><br>
+                    <input type="number" value="{{result[6]}}" name="zipcode" required/><br>
+                    <input type="number" value="{{result[7]}}" name="mobileno" required/><br>
+                    <input type="submit" value="Submit">
+                    <input type="reset" value="Clear">
+                </form>
+            </center>
+        </body>  
+</html>

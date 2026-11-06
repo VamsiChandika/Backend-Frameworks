@@ -1,0 +1,41 @@
+{% load static %}
+<html>
+    <head>
+        <title>
+            Data
+        </title>
+        <link href="{% static 'css/data.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <center>
+            <nav>
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'services' %}">Services</a>
+                {% if request.session %}
+                <a href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'signup' %}">Signup</a>
+                {% endif %}
+            </nav>
+            <h1>
+                This is Data page!
+            </h1>
+            <table>
+                <tr>
+                    <th>Id</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Password</th>
+                    <th>Mobileno</th><th>Location</th><th>Zipcode</th>
+                    <th>Action</th><th>Action</th>
+                </tr>
+                {% for row in employee %}
+                <tr>
+                    <td>{{row.id}}</td><td>{{row.firstname}}</td><td>{{row.lastname}}</td><td>{{row.email}}</td>
+                    <td>{{row.password}}</td><td>{{row.mobileno}}</td><td>{{row.location}}</td><td>{{row.zipcode}}</td>
+                    <td><a href="{% url 'update' row.id %}" id="a">Update</a></td><td><a href="{% url 'delete' row.id %}" id="a">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </center>
+    </body>
+</html>

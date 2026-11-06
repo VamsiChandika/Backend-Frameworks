@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <link rel="stylesheet" 
+        href="{{ url_for('static',filename='css/data.css') }}">
+    </head>
+        <body>
+            <center>
+                <nav>
+                    <a href="{{url_for('home')}}">Home</a>
+                    <a href="{{url_for('contact')}}">Contact</a>
+                    {% if session.get('user') %} 
+                    <a href="{{url_for('logout')}}">Logout</a> 
+                    {% else %}              
+                    <a href="{{url_for('login')}}">Login</a>
+                    <a href="{{url_for('signup')}}">Signup</a>
+                    {% endif %}
+                    <a href="{{url_for('services')}}">Services</a>
+                
+                </nav>
+                <h1>This Is Data Page</h1>
+                <table>
+                    <caption>
+                        Employee Data
+                    </caption>
+                    <tr>
+                        <th>Id</th><th>Firstname</th><th>Lastname</th>
+                        <th>Email</th><th>Password</th><th>Location</th>
+                        <th>Zipcode</th><th>Mobileno</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                    {% for row in result %}
+                    <tr>
+                        <td>{{row[0]}}</td><td>{{row[1]}}</td><td>{{row[2]}}</td><td>{{row[3]}}</td>
+                        <td>{{row[4]}}</td><td>{{row[5]}}</td><td>{{row[6]}}<td>{{row[7]}}</td>
+                        <td> <a href="{{(url_for('update',id=row[0]))}}">Click Here</a> </td>
+                        <td> <a href="{{(url_for('delete',id=row[0]))}}">Click Here</a> </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </center>
+        </body>  
+</html>

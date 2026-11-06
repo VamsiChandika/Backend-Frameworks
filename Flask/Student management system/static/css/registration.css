@@ -1,0 +1,21 @@
+h1{
+    font-size: 40px;
+    color:#212529
+}
+
+body{
+    background-color: #F8F9FA;
+}
+a{
+    font-size: 30px;
+    color : #4E73DF
+}
+tr,th,td{
+    height: 30px;width: 150px;
+    padding: 3px;
+    border: 2px solid black;
+    
+}
+table{
+    border: 2px solid black;
+}

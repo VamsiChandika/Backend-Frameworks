@@ -1,0 +1,16 @@
+create database student_flask;
+use student_flask;
+
+drop table student;
+
+create table student(
+id int primary key auto_increment,
+firstname varchar(100) not null,
+lastname varchar(100) not null,
+password varchar(100) not null,
+gender varchar(100) not null,
+mobileno bigint not null unique,
+department varchar(100) not null unique,
+course varchar(100) not null,
+guardian_name varchar(100) not null,
+address varchar(100) not null);

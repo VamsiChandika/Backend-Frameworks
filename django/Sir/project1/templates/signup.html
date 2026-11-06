@@ -1,0 +1,40 @@
+{% load static %}
+<html>
+    <head>
+        <title>
+            Signup
+        </title>
+        <link href="{% static 'css/signup.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <center>
+            <nav>
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'data' %}">Data</a>
+                <a href="{% url 'services' %}">Services</a>
+                {% if request.session %}
+                <a href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'signup' %}">Signup</a>
+                {% endif %}
+            </nav>
+            <h1>
+                This is Signup page!
+            </h1>
+            <form method="post" action="{% url 'signup' %}" >
+                {% csrf_token %}
+                <input type="text" placeholder="First Name" name="firstname" required><br>
+                <input type="text" placeholder="Last Name" name="lastname" required><br>
+                <input type="email" placeholder="@gmail.com" name="email" required><br>
+                <input type="password" placeholder="******" name="password" required><br>
+                <input type="number" placeholder="91+_" name="mobileno" required><br>
+                <textarea name="location"  cols="38" rows="5" placeholder="Address" required></textarea><br>
+                <input type="number" placeholder="*****" name="zipcode" required><br>
+                <input type="submit" value="Submit" id="">
+                <input type="reset" value="Clear" id="">
+            </form>
+        </center>
+    </body>
+</html>

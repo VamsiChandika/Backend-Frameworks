@@ -1,0 +1,75 @@
+{% load static %}
+<html>
+    <head>
+        <title>
+            Update
+        </title>
+        <link rel="stylesheet" href="{% static 'css/registration.css' %}">
+    </head>
+    <body>
+        <center>
+            <h1>
+                This Is A Update Page
+            </h1>
+            <form method="post" action="{% url 'update' result.id %}">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <th><label for="">First Name</label></th>
+                        <td><input type="text" value="{{ result.firstname }}" name="firstname" required></td>
+                    </tr>
+                   <tr>
+                     <th><label for="">Last Name</label></th>
+                     <td><input type="text" value="{{ result.lastname }}" name="lastname" required id=""></td>
+                   </tr>
+                    <tr>
+                        <th><label for="">Email</label></th>
+                        <td><input type="email" value="{{ result.email }}" name="email" required id=""></td>
+                    </tr>
+                    <tr>
+                        <th><label for="">Password</label></th>
+                        <td><input type="password" value="{{ result.password }}" name="password" required id=""></td>
+                    </tr>
+                    <tr>
+                        <th><label for="">Course</label></th>
+                        <td><select name="course" required>
+                        <option value="">Select</option>
+                        <option value="diploma" {% if result.course == 'diploma' %}selected{% endif %}>diploma</option>
+                        <option value="btech" {% if result.course == 'btech' %}selected{% endif %}>Btech</option>
+                        <option value="mtech" {% if result.course == 'mtech' %}selected{% endif %}>Mtech</option>
+                        <option value="phd" {% if result.course == 'phd' %}selected{% endif %}>PhD</option>
+                        <option value="masters" {% if result.course == 'masters' %}selected{% endif %}>Masters</option>
+                        <option value="ms" {% if result.course == 'ms' %}selected{% endif %}>MS</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <th><label for="">Department</label></th>
+                        <td><select name="department"  required>
+                        <option value="">Select</option>
+                        <option value="cse" {% if result.department == 'cse' %}selected{% endif %}>CSE</option>
+                        <option value="aiml" {% if result.department == 'aiml' %}selected{% endif %}>AIML</option>
+                        <option value="ece" {% if result.department == 'ece' %}selected{% endif %}>ECE</option>
+                        <option value="eee" {% if result.department == 'eee' %}selected{% endif %}>EEE</option>
+                        <option value="mech" {% if result.department == 'mech' %}selected{% endif %}>MECH</option>
+                        <option value="civil">CIVIL</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <th><label for="">Guardian</label></th>
+                        <td><input type="text" value="{{ result.guardian }}" name="guardian" required></td>
+                    </tr>
+                    <tr>
+                        <th><label for="">Contact</label></th>
+                        <td><input type="number" value="{{ result.contact }}" name="contact" required></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center;">
+                            <input type="submit" value="Submit">
+                            <input type="reset" value="Clear">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </center>
+    </body>
+</html>

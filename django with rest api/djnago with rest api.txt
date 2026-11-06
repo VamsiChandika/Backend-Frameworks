@@ -1,0 +1,104 @@
+create python -m venv myenv
+
+activate the myenv
+
+pip install django==5.2 mysqlclient bcrypt cryptography djangorestframework
+
+Working:
+=======
+
+Steps:
+-----
+
+1.create python -m venv myenv
+
+2.activate the myenv
+
+3.pip install django==5.2 mysqlclient bcrypt cryptography djangorestframework
+
+4.Create a project -- django-admin startproject projectapi
+
+5.cd projectapi
+
+6.create a database in MySQL workbench
+
+7.code .  --> settings.py/add the apps --> 'api','rest_framework',
+
+8.Change the database details in settings.py & check tables in MySQL workbench -- no tables
+
+9.Then run -- python mnanage.py makemigartions --> next --> python manage.py migrate   --> this to update the changes --> finally after this tables appears in MySQL workbench
+
+10.In api/models.py --> create a database table 
+class MyStudent(models.Model):
+    id = models.AutoField(primary_key=True,null=False)
+    firstname = models.CharField(max_length=100,null=False)
+    lastname = models.CharField(max_length=100,null=False)
+    email = models.EmailField(max_length=100,null=False,unique=True)
+    password = models.CharField(max_length=100,null=False)
+    mobileno = models.BigIntegerField(null=False,unique=True)
+    location = models.CharField(max_length=100)
+    zipcode = models.BigIntegerField(null=False)
+
+    class Meta:
+            db_table = 'mystudent'
+
+11.Then again do makemigrations and migrate for the student table ---- after this check in the MySQL workbench.
+
+12.In api/admin.py --> import the mystudent from api.models -- then register the site  
+from django.contrib import admin
+from api.models import MyStudent
+
+# Register your models here.
+admin.site.register(MyStudent)
+
+13.Create the new files in the api -- urls.py -- ( for every app we create ), serializers.py -- ( to convert Django ORM to json & json to djando ORM ) -- serializer differ from every table. 
+
+14.Code template in serializers.py -- 1st import serializers from rest_framework
+from rest_framework import serializers
+from api.models import MyStudent
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        """ In this we will define the model name
+        & feilds of the model"""
+        model = MyStudent
+        fields = "__all__"
+
+--- Makemigrations & Migrate
+
+15. now api/Urls.py -- importing original urls path same as for my own api/urls.py 
+--> The Urls.py template is 
+from django.urls import path
+from api.views import *
+urlpatterns=[
+    path('abc/')
+]
+
+16.In main urls.py import include near path module & give the path api -- it is for https/12.0.0.8000/api/abc/ --- its the main app path.
+from django.contrib import admin
+from django.urls import path,include****
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),*****
+]
+ 
+----------------------------------------------------------------------------------------------
+
+Day - 2
+-------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

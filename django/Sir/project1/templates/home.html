@@ -1,0 +1,23 @@
+{% load static %}
+<html>
+    <head>
+        <title>
+            Home
+        </title>
+        <link href="{% static 'css/home.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <center>
+            <nav>
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'data' %}">Data</a>
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'services' %}">Services</a>
+                <a href="{% url 'signup' %}">Signup</a>
+            </nav>
+        </center>
+        <h1>
+            This is Home page!
+        </h1>
+    </body>
+</html>

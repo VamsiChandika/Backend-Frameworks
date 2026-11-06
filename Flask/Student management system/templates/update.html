@@ -1,0 +1,91 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="{{url_for('static',filename='css/update.css')}}">
+    </head>
+    <body>
+        <center>
+            <h1>
+                This Is An Update Page
+            </h1>
+            <table>
+                <form method="post" action="{{url_for('update',id = result[0])}}">
+                <tr>
+                    <th><label for="">First Name  </label></th>
+                    <td><input type="text" value="{{result[1]}}" name="firstname" required/></td>
+                </tr>
+
+                <tr><th><label for="">Last Name  </label></th>
+                <td><input type="text" value="{{result[2]}}" name="lastname" required/></td></tr>
+
+                <tr>
+                    <th><label for="">Password  </label></th>
+                    <td><input type="password" name="password" value="{{result[3]}}" required/></td>
+                </tr>
+
+                <tr>
+                    <th><label for="">Gender  </label></th>
+                    <td><input type="radio" name="gender" value="male" {% if result[4] == "male" %} checked {% endif %} required>Male
+                    <input type="radio" name="gender" value="female" {% if result[4] == "female" %} checked {% endif %} required>Female
+                    <input type="radio" name="gender" value="Others" {% if result[4] == "others" %} checked {% endif %} required>Others
+                </td>
+                </tr>
+                
+
+                <tr>
+                    <th><label for="">Mobile Number  </label></th>
+                    <td><input type="number" value="{{result[5]}}" name="mobileno" required/></td>
+                </tr>
+
+
+               <tr>
+                    <th> <label for="">Course</label></th>
+                    <td><select name="course" required>
+                    <option value="">Select Course</option>
+                    <option value="Diploma" {% if result[6] == "Diploma" %} selected {% endif %} >DIPLOMA</option>
+                    <option value="Btech" {% if result[6] == "Btech" %} selected {% endif %} >Btech</option>
+                    <option value="Mtech" {% if result[6] == "Mtech" %} selected {% endif %} >Mtech</option>
+                    <option value="PhD" {% if result[6] == "PhD" %} selected {% endif %} >PhD</option>
+                    <option value="MS" {% if result[6] == "MS" %} selected {% endif %} >MS</option>
+                </select></td>
+               </tr>
+
+               <tr>
+                    <th><label for="">Department</label></th>
+                    <td><select name="department" required>
+                    <option value="">Select Department</option>
+                    <option value="CSE" {% if result[7] == "CSE" %} selected {% endif %} >CSE</option>
+                    <option value="AIML" {% if result[7] == "AIML" %} selected {% endif %} >AIML</option>
+                    <option value="ECE" {% if result[7] == "ECE" %} selected {% endif %} >ECE</option>
+                    <option value="EEE" {% if result[7] == "EEE" %} selected {% endif %} >EEE</option>
+                    <option value="MECH" {% if result[7] == "MECH" %} selected {% endif %} >MECH</option>
+                    <option value="CIVIL" {% if result[7] == "CIVIL" %} selected {% endif %} >CIVIL</option>
+                </select></td>
+                </tr>
+
+
+               <tr>
+                <th><label for="">Guardian Name</label></th>
+                <td><input type="text" value="{{result[8]}}" name="guardian_name" required/></td>
+               </tr>
+               
+
+               <tr>
+                 <th><label for="">Address  </label></th>
+                <td><textarea name="address" {{result[9]}} rows="6" cols="30" required>{{result[9]}}</textarea></td>
+               </tr>
+
+
+                <tr>
+                    <td colspan="2" align="center"><input type="submit" value="Submit">
+                    <input type="reset" value="Clear"></td>
+                </tr>
+
+            </form>
+            </table>
+
+
+            </form>
+            </table>
+        </center>
+    </body>
+</html>

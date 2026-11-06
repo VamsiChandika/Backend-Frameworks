@@ -1,0 +1,41 @@
+{% load static %}
+<html>
+    <head>
+        <title>
+            View
+        </title>
+        <link rel="stylesheet" href="{% static 'css/view.css' %}">
+    </head>
+    <body>
+        <center>
+            <nav>
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'view' %}">View</a>
+                {% if request.session %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'registration' %}">Registration</a>
+                {% else %}
+                <a href="{% url 'logout' %}">Logout</a>
+                {% endif %}
+            </nav>
+            <h1>
+                This Is A View Page
+            </h1>
+            <table>
+                <tr>
+                    <th>Student Id</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Password</th>
+                    <th>Course</th><th>Department</th><th>Guardian Name</th><th>Contact Number</th>
+                    <th>Action</th><th>Action</th>
+                </tr>
+                {% for e in students %}
+                <tr>
+                    <td>{{e.id}}</td><td>{{e.firstname}}</td><td>{{e.lastname}}</td><td>{{e.email}}</td><td>{{e.password}}</td>
+                    <td>{{e.course}}</td><td>{{e.department}}</td><td>{{e.guardian}}</td><td>{{e.contact}}</td>
+                    <td><a href="{% url 'update' e.id %}">Update</a></td><td><a href="{% url 'delete' e.id %}">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </center>
+    </body>
+</html>

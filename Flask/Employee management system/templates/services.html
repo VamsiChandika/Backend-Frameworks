@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <link rel="stylesheet" 
+        href="{{ url_for('static',filename='css/services.css') }}">
+    </head>
+        <body>
+            <center>
+                <nav>
+                    <a href="{{url_for('home')}}">Home</a>
+                    <a href="{{url_for('contact')}}">Contact</a>
+                    <a href="{{url_for('data')}}">Data</a>
+                    {% if session.get('user') %} 
+                    <a href="{{url_for('logout')}}">Logout</a> 
+                    {% else %}              
+                    <a href="{{url_for('login')}}">Login</a>
+                    <a href="{{url_for('signup')}}">Signup</a>
+                    {% endif %}
+                    
+                </nav>
+                <h1>This Is Services Page</h1>
+            </center>
+        </body>  
+</html>

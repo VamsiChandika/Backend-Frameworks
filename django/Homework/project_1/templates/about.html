@@ -1,0 +1,26 @@
+{% load static %}
+<html>
+    <head>
+        <title>
+            About
+        </title>
+        <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    </head>
+    <body>
+        <center>
+            <nav>
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'view' %}">View</a>
+                {% if request.session %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'registration' %}">Registration</a>
+                {% else %}
+                <a href="{% url 'logout' %}">Logout</a>
+                {% endif %}
+            <h1>
+                This Is A About Page
+            </h1>
+        </center>
+    </body>
+</html>

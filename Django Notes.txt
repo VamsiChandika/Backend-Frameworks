@@ -1,0 +1,250 @@
+Django:
+-------
+
+pip install python -m venv myenv
+
+pip install django==5.2
+
+pip install mysqlclient
+
+pip install bcrypt
+
+pip install cryptography
+
+pip list
+
+django-admin startproject project1  --> to create a project
+
+cd project1                         --> to go into project
+
+python manage.py startapp.app_name  --> to create apps in project
+
+create a database in MySQL workbench
+
+code .
+
+python manage.py runserver 12000 --> to check port link [ Default is 8000 ]
+
+In project1\settings.py -  add installed app names  --> app settings
+
+In project1\settings.py -  'DIRS': [os.path.join(BASE_DIR,'templates')],  --> template settings
+
+In static --> STATIC_URL = 'static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
+
+In databases --> 'ENGINE': 'django.db.backends.mysql',  ---> change to mysql
+        'NAME': 'django',
+        'USER' : 'root',
+        'PASSWORD' : 'vamsi@2004ABC',
+
+Create Templates --> in templates
+----------------------------------------
+
+step-2:
+=======
+
+In home or any template create a template
+
+Then in a views create a view by function
+
+Then create a url in url.py and give the path
+
+Then create a home.css
+
+In home.html
+
+{% load static %} 
+        <link href="{% static 'css/home.css' %}" rel="stylesheet">
+
+Same processs for every template and views
+
+
+then in url.py
+from django.contrib import admin
+from django.urls import path
+from home import views as v1
+from about import views as v2
+from dashboard import views as v3
+from data import views as v4
+from login import views as v5
+from services import views as v6
+from signup import views as v7
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('',v1.home,name="home"),
+    path('about/',v2.about,name="abiut"),
+    path('dashboard/',v3.dashboard,name="dashboard"),
+    path('data/',v4.data,name="data"),
+    path('login/',v5.login,name="login"),
+    path('services/',v6.services,name="services"),
+    path('signip/',v7.signup,name="signup"),
+]
+
+then nav tags in templates
+
+for any changes detection come to cmd
+python manage.py makemigrations
+
+for all ok purpose python manage.py migrate
+
+to createsuperuser
+python manage.py createsuperuser
+
+give admin name
+email
+password
+----------------------------------------
+step-3:
+=======
+
+database table in data/models.py
+creating table employee
+
+class Employee(models.Model):
+    id = models.AutoField(primary_key=True,null=False)
+    firstname = models.CharField(max_length=100,null=False)
+    lastname = models.CharField(max_length=100,null=False)
+    email = models.EmailField(max_length=100,null=False,unique=True)
+    password = models.CharField(max_length=100,null=False)
+    mobileno = models.BigIntegerField(null=False,unique=True)
+    location = models.CharField(max_length=100)
+    zipcode = models.BigIntegerField(null=False)
+
+    class Meta:
+            db_table = 'employee'
+            odering = ['firstname']
+  --- by meta class - we can change table name and give the orders accorging to the columns
+makemigrations  --- for the app data changes only
+migrate
+
+importing this db table to data/admin.py from data/models.py
+
+enter the data in the admin in chrome
+
+then in data/view.py create a url route
+
+create a table in data.html and data.css
+
+create a form in signup.html and login.html
+
+
+====================================================
+
+step-4 :
+========
+
+In signup.html give the url in the form - action=""
+
+go to signup/views.py and create a view for the form -- to database
+
+from django.shortcuts import render,redirect
+from data.models import Employee
+# Create your views here.
+
+def signup(request):
+    if request.method == "POST":
+      firstname = request.POST.get('firstname')
+      lastname = request.POST.get('lastname')
+      email = request.POST.get('email')
+      password = request.POST.get('password')
+      mobileno = request.POST.get('mobileno')
+      location = request.POST.get('location')
+      zipcode = request.POST.get('zipcode')
+      Employee.objects.create(firstname = firstname,
+                              lastname = lastname,
+                              email = email,
+                              password = password,
+                              mobileno = mobileno,
+                              location = location,
+                              zipcode = zipcode)
+      return redirect('login')
+    return render(request,'signup.html')
+
+for security purpose give the {% csrf_token %} in the signup.html form
+
+then next coming to update and delete
+
+create a urls for delete and update based on signup view
+
+give urls in the form and then next view in the signup/views.py
+
+in delete view create a function for delete
+
+def delete(request,id):
+   result = get_object_or_404(Employee,id=id)
+   if result:
+      result.delete()
+      return redirect('data')
+   return redirect('data')
+
+ create update.html by signup.form
+<form method="post" action="{% url 'update result.id' %}" >
+and update view is created
+
+----------------------------------------------------------------
+step-5:
+-------
+
+About login redirections
+
+give the action in the form and csrf_token in login form in login.html
+
+and create view for the login
+
+from django.contrib import messages
+def login(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+handle the error for employee doest not exist
+from django.contrib import messages
+try:
+          result = Employee.objects.get(email=email,password=password)
+          return redirect('dashboard')
+        except Exception:
+           messages.error(request,"Invalid user name or password!")
+           return redirect('login')
+
+give the alert message :
+
+from django.contrib import messages
+messages.error(request,"Invalid user name or password!")
+
+in login.html give the code for message display above the login form :
+{% if messages %}
+              {% for message in messages %}
+                 <h1>{{message}}</h1>
+              {% endfor %}
+            {% enfif %}
+
+create a logout view in login/views.py
+ create a session in login based on a column for example:
+request.session['username'] = result.firstname  --- in try block
+
+def logout(request):
+   request.session.flush()
+   return redirect('login')
+
+create a url path for logout in project/url.py
+
+based on session give the nav tags in all templates
+
+                {% if request.session %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'signup' %}">Signup</a>
+                {% else %}
+                <a href="{% url 'logout' %}">Logout</a>
+                {% endif %}
+
+in login.html add new input as 
+<input type="hidden" name="next" value="{{request.GET.next}}"> -- to go to data page directly when login data.html silde. Works only in data.html slide but not for all 
+
+in data/view in else block: 
+else:
+        return redirect('/login/?next=/data/')
+
+
+
+
